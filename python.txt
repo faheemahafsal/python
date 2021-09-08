@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="banner">
+                <div class="banner-text">
+                    <h1>TODO</h1>
+                </div>
+            </div>
+        </div>
+<div class="row">
+    <div class="col-md-12">
+        <h5>Add task</h5>
+        <form method="post"  class="p-3-shadow">
+            {% csrf_token %}
+            <div class="form-group">
+                <input type="text" name="name" class="form-control" placeholder="Name of task">
+            </div>
+            <div class="form-group">
+                <input type="text" name="priority"  class="form-control" placeholder="Your priority">
+            </div>
+            <input type="submit" class="btn btn-success">
+        </form>
+    </div>
+</div>
+<div class="col-md-6">
+    <h5>tasks completed</h5>
+    {% for i in obj1 %}
+    <div class="shadow card">
+        <div class="card-body">
+            <h5 class="card-title">{{i.name}}</h5>
+            <p><b>{{i.priority}}</b></p>
+            <a class="btn btn-danger" href="">Done</a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+</div>
+</div>
+
+
+{% endblock %}
+
+
+
+
+
+<form method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+  <input type="text" name="name" placeholder="Product name"><br><br>
+   <input type="text" name="price" placeholder="Product Price"><br><br>
+   <input type="text" name="desc" placeholder="Product Description"><br><br>
+   <input type="file" name="image" placeholder="Product Image"><br><br>
+   <input type="Submit" value="ADD">
+</form>
+
+
+
+
+
+
+<form method="post" enctype="multipart/form-data">
+
+    {% csrf_token %}
+    {{form.as_p}}
+    <input type="submit" value="update">
+</form>
+
+
+
+def add_product(request):
+    if request.method=='POST':
+        name=request.POST.get('name')
+        desc = request.POST.get ( 'desc' )
+        price = request.POST.get ( 'price' )
+        img = request.FILES['img']
+        # img = request.FILES['img']
+        s=shop(name=name,desc=desc,price=price)
+        s.save()
+        print("product added")
+    return render(request,'add_product.html')
+
+def update(request,id):
+    obj=shop.objects.get(id=id)
+    form=ModeForm(request.POST or None,request.FILES,instance=obj)
+    if form.is_valid():
+        form.save()
+        return redirect('/')
+        return render(request,"edit.html")
+

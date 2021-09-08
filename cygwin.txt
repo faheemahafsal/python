@@ -1,0 +1,36 @@
+
+cd C:\derby\bin
+startNetworkServer -h 0.0.0.0
+
+
+
+
+
+
+
+
+export HADOOP_HOME='/cygdrive/c/hadoop'
+export PATH=$PATH:$HADOOP_HOME/bin
+export HIVE_HOME='/cygdrive/c/hive'
+export PATH=$PATH:$HIVE_HOME/bin
+export HADOOP_CLASSPATH=$(hadoop classpath)
+export HADOOP_CLASSPATH=$HADOOP_CLASSPATH:$HIVE_HOME/lib/*.jar
+
+
+
+$HADOOP_HOME/sbin/start-all.cmd
+
+export HADOOP_HOME='/cygdrive/c/hadoop'
+export PATH=$PATH:$HADOOP_HOME/bin
+export HIVE_HOME='/cygdrive/c/hive'
+export PATH=$PATH:$HIVE_HOME/bin
+export HADOOP_CLASSPATH=$(hadoop classpath)
+export HADOOP_CLASSPATH=$HADOOP_CLASSPATH:$HIVE_HOME/lib/*.jar
+
+$HADOOP_HOME%\sbin\start-dfs.cmd
+$HADOOP_HOME%\sbin\start-yarn.cmd
+
+
+
+
+$HIVE_HOME/bin/schematool -dbType derby -initSchema
